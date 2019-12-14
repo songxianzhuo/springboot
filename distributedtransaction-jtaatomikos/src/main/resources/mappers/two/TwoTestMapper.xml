@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jtaatomikos.dao.two.TwoTestDao">
+    <select id="getCityById" resultType="com.example.jtaatomikos.model.City">
+        select c.id,c.name,c.number from area_city c where c.id = #{id}
+    </select>
+
+    <insert id="addCity" parameterType="com.example.jtaatomikos.model.City">
+        insert into area_city (id,name,number) values (#{id},#{name},#{number})
+    </insert>
+
+    <update id="updateCity" parameterType="com.example.jtaatomikos.model.City">
+        UPDATE area_city
+        <set>
+            <if test="null != name and '石家庄市' != name">
+                name = #{nmae},
+            </if>
+            <if test="null != number">
+                number = #{number},
+            </if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

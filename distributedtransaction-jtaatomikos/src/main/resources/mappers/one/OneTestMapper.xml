@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.jtaatomikos.dao.one.OneTestDao">
+    <select id="getProvinceById" resultType="com.example.jtaatomikos.model.Province">
+        select * from area_province p where p.id = #{id}
+    </select>
+
+    <insert id="addProvince" parameterType="com.example.jtaatomikos.model.Province">
+        insert into area_province (id,name,number) values(#{id},#{name},#{number})
+    </insert>
+
+    <update id="updateProvince" parameterType="com.example.jtaatomikos.model.Province">
+        UPDATE area_province
+        <set>
+            <if test="null != name and '河北省' != name">
+                name = #{nmae},
+            </if>
+            <if test="null != number">
+                number = #{number},
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+</mapper>

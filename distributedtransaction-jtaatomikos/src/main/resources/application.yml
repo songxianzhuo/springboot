@@ -1,0 +1,43 @@
+server:
+  port: 8003
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    one:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.1.85:3306/test?characterEncoding=UTF-8&useSSL=false
+      username: developer
+      password: developer12321
+    two:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.1.85:3306/test_02?characterEncoding=UTF-8&useSSL=false
+      username: developer
+      password: developer12321
+    druid:
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: false
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1
+      web-stat-filter:
+        enabled: false
+        session-stat-enable: false
+#  jta:
+#    atomikos:
+#      properties:
+#        max-actives: 10
+#        max-timeout: 300000
+#        default-jta-timeout: 10000
+#        enable-logging: true
+
+#mybatis:
+#  mapper-locations: classpath:mappers/*/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+#logging:
+#  level: debug
