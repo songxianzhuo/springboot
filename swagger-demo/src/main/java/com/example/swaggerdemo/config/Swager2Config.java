@@ -42,7 +42,7 @@ public class Swager2Config {
                 // 接口文档的描述
                 .description("demo api接口文档")
                 // 服务条款网址
-                .termsOfServiceUrl("http://localhost/")
+                //.termsOfServiceUrl("http://localhost/")
                 // 接口文档的版本
                 .version("1.0.0")
                 // 接口文档维护联系信息

@@ -16,12 +16,20 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <smalldoc.version>2.4</smalldoc.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- smalldoc,基于javadoc规范自动生成API的工具 -->
+        <dependency>
+            <groupId>com.github.liuhuagui</groupId>
+            <artifactId>smalldoc-spring-boot-starter</artifactId>
+            <version>${smalldoc.version}</version>
+<!--            <scope>test</scope>-->
         </dependency>
 
         <dependency>
