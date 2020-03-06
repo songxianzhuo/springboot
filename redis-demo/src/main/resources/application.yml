@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: qwe321
+    timeout: 6s
+logging:
+  file: #file\u4E0Bpath\u548Cname\u51B2\u7A81\uFF0C\u4E24\u8005\u9009\u5176\u4E00\uFF0Cname\u53EF\u4EE5\u5E26\u8DEF\u5F84
+    name: E:\log\song.log
+#    path:
+  level:
+    org.springframework.data.redis: debug
+

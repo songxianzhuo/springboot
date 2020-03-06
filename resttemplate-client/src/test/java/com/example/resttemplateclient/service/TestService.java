@@ -145,20 +145,20 @@ public class TestService extends ResttemplateclientApplicationTests {
         map.put("mcnid","mcn0001");
         map.put("platId",10);
         map.put("type","testPostBody1");
-        ResponseEntity<Article> responseEntity = restTemplate.postForEntity(url,map,Article.class);
-        Article article = responseEntity.getBody();
+        Article article = restTemplate.postForObject(url,map,Article.class);
+//        Article article = responseEntity.getBody();
         System.out.println(article.toString());
-        url = url + "2";
-        map.put("mcnid","mcn0002");
-        map.put("platId",11);
-        map.put("type","testPostBody2");
-        //设置请求头
-        HttpHeaders headers = new HttpHeaders();
-        //设置请求类型，默认是MediaType.APPLICATION_FORM_URLENCODED
-        headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
-        HttpEntity httpEntity = new HttpEntity(map,headers);
-        Article article2 = restTemplate.postForObject(url,httpEntity,Article.class);
-        System.out.println(article2.toString());
+//        url = url + "2";
+//        map.put("mcnid","mcn0002");
+//        map.put("platId",11);
+//        map.put("type","testPostBody2");
+//        //设置请求头
+//        HttpHeaders headers = new HttpHeaders();
+//        //设置请求类型，默认是MediaType.APPLICATION_FORM_URLENCODED
+//        headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
+//        HttpEntity httpEntity = new HttpEntity(map,headers);
+//        Article article2 = restTemplate.postForObject(url,httpEntity,Article.class);
+//        System.out.println(article2.toString());
     }
 
     /**
