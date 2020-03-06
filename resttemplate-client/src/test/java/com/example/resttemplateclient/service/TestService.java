@@ -93,7 +93,7 @@ public class TestService extends ResttemplateclientApplicationTests {
         System.out.println(article.toString());
         url = url + "&type={type}&platId={platId}";
         //getForEntity param 注意参数值和占位符顺序一致
-        ResponseEntity<Article> responseEntity2 = restTemplate.getForEntity(url,Article.class,"testGetParam","mcn0000",11);
+        ResponseEntity<Article> responseEntity2 = restTemplate.getForEntity(url,Article.class,"mcn0000","testGetParam",11);
         Article article2 = responseEntity2.getBody();
         System.out.println(article2.toString());
     }
@@ -102,10 +102,13 @@ public class TestService extends ResttemplateclientApplicationTests {
     /**
      * post param请求时
      * client端要用LinkedMultiValueMap来封装参数
-     * client端和server端的请求类型需保持一致,
-     * 如果server是默认的请求类型，
+     * 如果server设置了请求类型，
+     *      client端必须设置请求类型，且和server端的请求类型需保持一致
+     *      如果采用LinkedMultiValueMap方式传参，默认的请求类型是MediaType.APPLICATION_FORM_URLENCODED
+     * 如果server没有设置请求类型，
      *      client可以不需要配置HttpHeaders和HttpEntity，直接用LinkedMultiValueMap传参就可以
      *      client如果配置了HttpHeaders,HttpHeaders可以不用设置ContentType属性
+     *
      */
     @Test
     public void testPostParam(){
@@ -113,29 +116,40 @@ public class TestService extends ResttemplateclientApplicationTests {
         //MultiValueMap
         MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
         params.add("mcnid","mcn0000");
-        //postForEntity MultiValueMap,service
+        //postForEntity MultiValueMap
         ResponseEntity<Article> responseEntity = restTemplate.postForEntity(url,params,Article.class);
         Article article = responseEntity.getBody();
         System.out.println(article.toString());
+        //postForObject MultiValueMap
+        Article article2 = restTemplate.postForObject(url,params,Article.class);
+        System.out.println(article2.toString());
         //设置请求头
         HttpHeaders headers = new HttpHeaders();
-        //设置请求类型，默认是MediaType.APPLICATION_FORM_URLENCODED
-        //headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        //设置请求类型
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        params.add("platId",11);
+        params.add("type","testPostParam");
         //设置请求体
         HttpEntity httpEntity = new HttpEntity(params,headers);
         //postForObject httpEntity
-        params.add("platId",11);
-        params.add("type","testPostParam");
-        Article article2 = restTemplate.postForObject(url,httpEntity,Article.class);
-        System.out.println(article2.toString());
+        Article article3 = restTemplate.postForObject(url,httpEntity,Article.class);
+        System.out.println(article3.toString());
+        //postForEntity httpEntity
+        ResponseEntity<Article> responseEntity2 = restTemplate.postForEntity(url,httpEntity,Article.class);
+        Article article4 = responseEntity2.getBody();
+        System.out.println(article4.toString());
     }
 
     /**
      * post body请求时
-     * client端和server端的请求类型需保持一致,
-     * 如果server是默认的请求类型，
-     *      client可以不需要配置HttpHeaders和HttpEntity,直接用map传参
+     * client端要用LinkedMultiValueMap来封装参数
+     * 如果server设置了请求类型，
+     *      client端必须设置请求类型，且和server端的请求类型需保持一致
+     *      如果采用HashMap方式传参，默认的请求类型是MediaType.APPLICATION_JSON
+     * 如果server没有设置请求类型，
+     *      client可以不需要配置HttpHeaders和HttpEntity，直接用LinkedMultiValueMap传参就可以
      *      client如果配置了HttpHeaders,HttpHeaders可以不用设置ContentType属性
+     *
      */
     @Test
     public void testPostBody(){
@@ -145,20 +159,28 @@ public class TestService extends ResttemplateclientApplicationTests {
         map.put("mcnid","mcn0001");
         map.put("platId",10);
         map.put("type","testPostBody1");
-        Article article = restTemplate.postForObject(url,map,Article.class);
-//        Article article = responseEntity.getBody();
+        // postForEntity map
+        ResponseEntity<Article> responseEntity = restTemplate.postForEntity(url,map,Article.class);
+        Article article = responseEntity.getBody();
         System.out.println(article.toString());
-//        url = url + "2";
-//        map.put("mcnid","mcn0002");
-//        map.put("platId",11);
-//        map.put("type","testPostBody2");
-//        //设置请求头
-//        HttpHeaders headers = new HttpHeaders();
-//        //设置请求类型，默认是MediaType.APPLICATION_FORM_URLENCODED
-//        headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
-//        HttpEntity httpEntity = new HttpEntity(map,headers);
-//        Article article2 = restTemplate.postForObject(url,httpEntity,Article.class);
-//        System.out.println(article2.toString());
+        // postForObject map
+        Article article2 = restTemplate.postForObject(url,map,Article.class);
+        System.out.println(article2.toString());
+        url = url + "2";
+        map.put("mcnid","mcn0002");
+        map.put("platId",11);
+        //设置请求头
+        HttpHeaders headers = new HttpHeaders();
+        //设置请求类型
+        headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
+        HttpEntity httpEntity = new HttpEntity(map,headers);
+        // postForObject httpEntity
+        Article article3 = restTemplate.postForObject(url,httpEntity,Article.class);
+        System.out.println(article3.toString());
+        // postForEntity httpEntity
+        ResponseEntity<Article> responseEntity2 = restTemplate.postForEntity(url,httpEntity,Article.class);
+        Article article4 = responseEntity2.getBody();
+        System.out.println(article4.toString());
     }
 
     /**
@@ -203,20 +225,5 @@ public class TestService extends ResttemplateclientApplicationTests {
         //postForObject httpEntity
         Article article = restTemplate.postForObject(url,httpEntity,Article.class);
         System.out.println(article.toString());
-    }
-
-    @Test
-    public void testtest(){
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        list.add("5");
-        list.add("6");
-        list.forEach(s -> {
-            System.out.println(s);
-            System.out.println(12346798);
-        });
     }
 }

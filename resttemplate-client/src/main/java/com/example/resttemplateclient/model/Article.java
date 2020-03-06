@@ -23,11 +23,5 @@ public class Article implements Serializable {
     private String platform;
     private String tittle;
     private String publish_time;
-    private Integer collection_count;
-    private Integer comment_count;
-    private Integer like_count;
-    private Integer read_count;
-    private Integer recommended_count;
-    private Integer share_count;
     private String type;
 }

@@ -34,7 +34,11 @@ public class TestController {
      */
 
 
-
+    /**
+     * @RequestMapping的默认请求方法是Get
+     * @RequestMapping("/test") 和 @RequestMapping(value = "/test") 和 @RequestMapping(path = "/test") 效果一样
+     * @return
+     */
     @RequestMapping("/test")
     public Object test(){
         Article article = result();
@@ -64,8 +68,7 @@ public class TestController {
     }
 
     /**
-     *
-     * 于@RequestParam注解，如果required=true,你有没有传参，如果设置了defaultValue属性，也会成功请求，不会报错
+     * @RequestParam注解，如果required=true,你有没有传参，如果设置了defaultValue属性，也会成功请求，不会报错
      * @return
      */
     @GetMapping(value = "/testGetParam")
@@ -85,10 +88,12 @@ public class TestController {
     }
 
     /**
-     * @PostMapping 如果没有设置consumes，默认是MediaType.APPLICATION_FORM_URLENCODED_VALUE
+     * @PostMapping
+     * consumes没有设置则对请求类型没有限制
+     * 设置值后，只有接受对应的请求类型
      * @return
      */
-    @PostMapping(value = "/testPostParam")
+    @PostMapping(value = "/testPostParam",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Object testPostParam(HttpServletRequest request,
                                 @RequestParam String mcnid,
                                 @RequestParam(defaultValue = "10") Integer platId,
@@ -106,7 +111,7 @@ public class TestController {
 
 
     /**
-     * @PostMapping 如果没有设置consumes，默认是MediaType.APPLICATION_FORM_URLENCODED_VALUE
+     * @PostMapping
      * @param articleParam
      * @return
      */
@@ -181,12 +186,6 @@ public class TestController {
         article.setPlatform("toutiao");
         article.setTittle("全国各族人民共同庆祝中华人民共和国成立70周年");
         article.setPublish_time("2019-10-01 00:00:00");
-        article.setCollection_count(15000);
-        article.setComment_count(10000);
-        article.setLike_count(25000);
-        article.setRead_count(680000);
-        article.setRecommended_count(88888);
-        article.setShare_count(11111);
         return article;
     }
 }
