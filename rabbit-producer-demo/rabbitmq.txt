@@ -1,0 +1,4 @@
+学习链接：https://blog.csdn.net/Anumbrella
+进入这个人的博科，RabbitMq学习（一）到八，写的不错，流程走下来，学到不少
+
+

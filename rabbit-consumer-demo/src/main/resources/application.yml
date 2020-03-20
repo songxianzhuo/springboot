@@ -1,0 +1,45 @@
+server:
+  port: 8002
+spring:
+  rabbitmq:
+    host: 192.168.1.85
+    port: 5672
+    username: songxianzhuo
+    password: songxianzhuo
+    connection-timeout: 5000
+    virtual-host: /
+    listener:
+      type: simple #监听容器类型，分simple和direct，默认是simple
+      simple:
+        acknowledge-mode: manual #消费者应答模式有3种：none(不会应答),auto(自动应答，默认),manual(手动应答，推荐使用)
+        prefetch: 2 #消费者在同一时刻可以拥有的未完成的待ack确认的消息最大数量，该属性在开启ack手动确认应答时启用
+        max-concurrency: 2 #消费者最大并发数量,队列中未确认的消息（Unacked）最大值 = prefetch * max-concurrency
+        concurrency: 2 #消费者最小并发数量，默认是1
+        retry: #消费者重试机制在自动应答模式下才会生效
+          enabled: true #开启消费者重试
+          initial-interval: 1000 #初始重试间隔为1s
+          max-attempts: 3 #重试的最大次数
+          multiplier: 1.0 #每次重试的因子是1.0等差
+          max-interval: 10000 #重试间隔最多10s
+          stateless: true #重试是无状态还是有状态，true是有状态，false是无状态
+        default-requeue-rejected: true #消费失败，自动重新入队，重试次数超过最大限制之后丢弃,true:自动重新入队，false:丢弃
+        auto-startup: true #是否在程序启动是自动启动容器，默认是true
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: qwerty654321
+    database: 0
+    lettuce:
+      pool:
+        max-active: 2
+        max-idle: 20
+        min-idle: 1
+
+logging:
+  level:
+    com:
+      example:
+        rabbitconsumer: debug
+  file:
+    name: E:\log\consumer\consumer.log #设置日志文件名，可以带路径，不带路径就会在项目目录下生成日志文件

@@ -1,0 +1,37 @@
+server:
+  port: 8001
+spring:
+  rabbitmq:
+    host: 192.168.1.85
+    port: 5672
+    username: songxianzhuo
+    password: songxianzhuo
+    virtual-host: / #如果使用rabbit默认的虚拟机“/”，则不需要配置
+    connection-timeout: 0 #链接超时时间，设置为0则表示一直等待
+    publisher-confirm-type: correlated #必须配置这个才会确认回调，使用amqp事务时需要将该属性设为none
+    publisher-returns: true #是否开启生产者发布回退，默认是false,开启时需同时设置mandatory设为true，否则不会回调，消息会丢失
+    requested-heartbeat: 10 #请求心跳超时时间，0表示没有，默认单位是秒
+    template: #配置rabbitTemplate属性,只有自动配置的rabbitTemplate才会匹配这些属性
+      mandatory: true #是否开启强制性消费，开启时，若同时开启了生产者消息回退功能，遇到无法路由的消息时，broker会调用basic.return方法将消息返还给生产者;为false时，出现上述情况broker会直接将消息丢弃；没有设置时跟随属性spring.rabbitmq.publisher-returns的值，
+      retry:
+        enabled: true #开启发送重试策略，默认是关闭的
+        initial-interval: 1000ms #第一次和第二次尝试传递消息之间的时间间隔,默认1000ms
+        max-attempts: 4 #最大尝试次数，默认值3
+        multiplier: 1 #每次重试的时间间隔的的乘数因子,默认是1，下一次尝试时间间隔=上次尝试时间间隔的*乘数因子
+        max-interval: 10000ms #两次尝试之间的最大间隔时间，默认是10000ms
+    cache: #每个连接中通道配置
+      channel:
+        checkout-timeout: 0 #当缓存通道数达到最大值时，等待获取通道的持续时间，如果是0，表示总是新建一个通道
+        size: 50 #保留在缓存中的通道数，当checkout-timeout > 0时，每个连接的最大通道数
+
+logging:
+  level:
+    org:
+      springframework:
+        retry: debug
+    com:
+      example:
+        rabbitproducer: debug
+  file:
+#    path: E:\log\song #日志路径，日志文件名字是spring.log,另外，file.path和file.name不能同时设置，设置path
+    name: E:\log\producer\producer.log #设置日志文件名，可以带路径，不带路径就会在项目目录下生成日志文件
