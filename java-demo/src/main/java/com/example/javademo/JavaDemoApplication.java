@@ -1,13 +1,13 @@
-package com.example.restfuldemo;
+package com.example.javademo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RestfuldemoApplication {
+public class JavaDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RestfuldemoApplication.class, args);
+        SpringApplication.run(JavaDemoApplication.class, args);
     }
 
 }

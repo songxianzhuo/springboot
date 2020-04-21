@@ -1,10 +1,10 @@
-package com.example.restfuldemo;
+package com.example.javademo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RestfuldemoApplicationTests {
+public class JavaDemoApplicationTests {
 
     @Test
     void contextLoads() {
