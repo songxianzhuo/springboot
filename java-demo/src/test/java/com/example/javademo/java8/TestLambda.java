@@ -1,8 +1,10 @@
 package com.example.javademo.java8;
 
 import com.example.javademo.JavaDemoApplicationTests;
+import com.example.javademo.entity.Person;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -63,5 +65,17 @@ public class TestLambda extends JavaDemoApplicationTests {
         new Thread(() -> System.out.println(7)
         ).start();
 
+    }
+
+    @Test
+    public void testSorted(){
+        Person[] array = {
+                new Person("古力娜扎", 19),
+                new Person("迪丽热巴", 18),
+                new Person("马尔扎哈", 20) };
+        Arrays.sort(array, Comparator.comparingInt(Person::getAge));
+        for (Person person : array) {
+            System.out.println(person);
+        }
     }
 }

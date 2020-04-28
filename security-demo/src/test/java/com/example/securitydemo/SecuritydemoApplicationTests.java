@@ -1,13 +1,13 @@
-package com.example.lambdademo;
+package com.example.securitydemo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LambdademoApplicationTests {
+class SecuritydemoApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
