@@ -33,11 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 授权请求
             .authorizeRequests()
                 // 路径为"/"和"/home"的可以任意访问
-                .antMatchers("/", "/home").permitAll()
-                // 其他请求必须经过身份认证
+                .antMatchers("/","/home").permitAll()
+                // 其他请求必须经过用户认证,如果没有认证直接重定向到登陆页面，认证后返回原页面
                 .anyRequest().authenticated()
                 .and()
-                // 定义用户登录行为
+                // 定义用户登录行为，
             .formLogin()
                 // 设置登录首页，默认是"/login",登录页面可以任意访问
                 .loginPage("/login").permitAll()

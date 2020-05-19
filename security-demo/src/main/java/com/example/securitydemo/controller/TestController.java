@@ -29,4 +29,11 @@ public class TestController {
     public String login() {
         return "login";
     }
+
+    @RequestMapping("/home")
+    public String home() {
+        return "index";
+    }
 }
+
+
