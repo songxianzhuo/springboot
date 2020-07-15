@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Person {
 
-    private String name;
+    public String name;
 
-    private Integer age;
+    private volatile Integer age;
 }

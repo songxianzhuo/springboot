@@ -13,13 +13,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 public class MyThread extends Thread {
 
-    public AtomicInteger count = new AtomicInteger(0);
+    volatile public static int count = 1;
 
     @SneakyThrows
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            System.out.println(count.incrementAndGet());
+            System.out.println(Thread.currentThread().getName() + " before" +  " count=" + count);
+            count++;
+            System.out.println(Thread.currentThread().getName() + " end" +  " count=" + count);
         }
     }
 }

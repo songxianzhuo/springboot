@@ -20,86 +20,181 @@ public class BubbleSortTest extends JavaDemoApplicationTests {
 
     /**
      * 冒泡排序-初级版
+     * 外部循环控制所有的回合，内部循环进行冒泡处理,最多比较array.length-1次
      * 缺点
-     *     算法效率低
-     *     不算真正的冒泡排序，不满足两两比较相邻元素
-     */
-    @Test
-    public void test1(){
-        Integer[] array = array1;
-        for (int i = 0; i < array.length ; i++) {
-            for (int j = i + 1; j < array.length ; j++) {
-                if(array[i] > array[j]){
-                    int temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
-                }
-            }
-        }
-        Arrays.asList(array).stream().forEach(System.out::println);
-    }
-
-    /**
-     * 冒泡排序-优化版
-     * 缺点
-     *     如果遇到i后面都是正确排序时，不会立即停止，还会继续遍历，虽然没有发生交换
-     */
-    @Test
-    public void test2(){
-        Integer[] array = array1;
-        for (int i = 0; i < array.length ; i++) {
-            for (int j = array.length-2; j >=i ; j--) {
-                if(array[j] > array[j+1]){
-                    int temp = array[j];
-                    array[j] = array[j+1];
-                    array[j+1] = temp;
-                }
-            }
-        }
-        Arrays.asList(array).stream().forEach(System.out::println);
-    }
-
-    /**
-     * 冒泡排序-最终版
-     * 添加flag标识有效避免了因已经有序的情况下的无意义循环判断
+     *     如果数组本身就是有序的如[1,2,3,4,5,6,7,8,9]，该方法依然会从头到尾遍历一下的
      */
     @Test
     public void testAsc(){
         Integer[] array = array1;
-        // 判断是否发生的交换，初始值是true
-        boolean flag = true;
-        // 若flag为false则退出循环
-        for (int i = 0; i < array.length && flag ; i++) {
-            flag = false;
-            for (int j = array.length-2; j >=i ; j--) {
+        for (int i = 0; i < array.length-1; i++) {
+            for (int j = 0; j < array.length-i-1; j++) {
                 if(array[j] > array[j+1]){
                     int temp = array[j];
                     array[j] = array[j+1];
                     array[j+1] = temp;
-                    // 若发生元素交换则flag设置为true
-                    flag = true;
                 }
             }
         }
         Arrays.asList(array).stream().forEach(System.out::println);
     }
 
+    /**
+     * 冒泡排序-优化版1
+     * 优化：添加flag标识有效避免了因已经有序的情况下的无意义循环判断
+     * 缺点：如果数组是部分有序，如[4,3,2,1,5,6,7,8,9]，在内层循环中依然会遍历有序部分元素
+     */
     @Test
-    public void testDesc(){
+    public void testAsc1(){
         Integer[] array = array1;
-        // 判断是否发生的交换，初始值是true
-        boolean flag = true;
-        // 若flag为false则退出循环
-        for (int i = 0; i < array.length && flag ; i++) {
-            flag = false;
-            for (int j = array.length-2; j >=i ; j--) {
-                if(array[j] < array[j+1]){
+        for (int i = 0; i < array.length-1; i++) {
+            // 判断是否发生的交换，初始值是true
+            boolean flag = true;
+            for (int j = 0; j< array.length-i-1; j++) {
+                if(array[j] > array[j+1]){
                     int temp = array[j];
                     array[j] = array[j+1];
                     array[j+1] = temp;
-                    // 若发生元素交换则flag设置为true
-                    flag = true;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
                 }
+            }
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
+            }
+        }
+        Arrays.asList(array).stream().forEach(System.out::println);
+    }
+
+    /**
+     * 冒泡排序-优化版2
+     * 优化：添加数组中无序序列的边界
+     * 缺点：对于已经大部分有序的数组，如[2,3,4,5,6,7,8,1,9]，其实只需要移动元素1就可以了。但是目前的冒泡排序依然要遍历8轮，可以使用鸡尾酒排序解决
+     */
+    @Test
+    public void testAsc2(){
+        Integer[] array = array1;
+        // 无序边界
+        int sortBorder = array.length-1;
+        for (int i = 0; i < array.length-1; i++) {
+            // 判断是否发生的交换，初始值是true
+            boolean flag = true;
+            // 最后一次交换的位置
+            int lastExchangeIndex = 0;
+            for (int j = 0; j < sortBorder; j++) {
+                if(array[j] > array[j+1]){
+                    int temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
+                    // 更新最后一次交换的位置
+                    lastExchangeIndex = j;
+                }
+            }
+            sortBorder = lastExchangeIndex;
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
+            }
+        }
+        Arrays.asList(array).stream().forEach(System.out::println);
+    }
+
+    /**
+     * 鸡尾酒排序 是冒泡排序的改版
+     * 缺点：没有添加无序边界
+     */
+    @Test
+    public void cocktailSort(){
+        Integer[] array = array1;
+        for (int i = 0; i < array.length/2; i++) {
+            // 判断是否发生的交换，初始值是true
+            boolean flag = true;
+            // 奇数轮，从左至右进行比较和交换
+            for (int j = i; j < array.length-i-1; j++) {
+                if(array[j] > array[j+1]){
+                    int temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
+                }
+            }
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
+            }
+            flag = true;
+            // 偶数轮，从右至左进行比较和交换
+            for (int j = array.length-i-2; j > i; j--) {
+                if(array[j] < array[j-1]){
+                    int temp = array[j];
+                    array[j] = array[j-1];
+                    array[j-1] = temp;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
+                }
+            }
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
+            }
+        }
+        Arrays.asList(array).stream().forEach(System.out::println);
+    }
+
+    /**
+     * 鸡尾酒排序-优化版1
+     * 优化：添加无序边界
+     */
+    @Test
+    public void cocktailSort2(){
+        Integer[] array = array1;
+        // 正向无序边界
+        int sortBorder = array.length-1;
+        // 逆向无序边界
+        int sortBorder1 = 0;
+        for (int i = 0; i < array.length/2; i++) {
+            // 判断是否发生的交换，初始值是true
+            boolean flag = true;
+            // 最后一次交换的位置
+            int lastExchangeIndex = 0;
+            // 奇数轮，从左至右进行比较和交换
+            for (int j = i; j < sortBorder; j++) {
+                if(array[j] > array[j+1]){
+                    int temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
+                    // 更新最后一次交换的位置
+                    lastExchangeIndex = j;
+                }
+            }
+            sortBorder = lastExchangeIndex;
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
+            }
+            flag = true;
+            // 偶数轮，从右至左进行比较和交换
+            for (int j = array.length-i-2; j > sortBorder1; j--) {
+                if(array[j] < array[j-1]){
+                    int temp = array[j];
+                    array[j] = array[j-1];
+                    array[j-1] = temp;
+                    // 若发生元素交换则flag设置为false
+                    flag = false;
+                    // 更新最后一次交换的位置
+                    lastExchangeIndex = j;
+                }
+            }
+            sortBorder1 = lastExchangeIndex;
+            // 若flag为true说明序列已全部有序，则退出循环
+            if (flag){
+                break;
             }
         }
         Arrays.asList(array).stream().forEach(System.out::println);
@@ -107,14 +202,18 @@ public class BubbleSortTest extends JavaDemoApplicationTests {
 
 
     /**
-     * 冒泡排序 Bubble Sort
+     * 冒泡排序 Bubble Sort 比较和交换是单向的
      *      基本思想：两两比较相邻记录的关键字，如果反序则交换，直到没有反序的记录为止
      *
-     * 根据冒泡排序最终版
      * 时间复杂度
      *      最好情况，是排序表本身就是有序的，比较次数为n-1，时间复杂度为O(n)
      *      最坏情况，是排序表所有数据都是逆序的，比较次数为：1+2+3+...+(n-1) = n*(n-1)/2,时间复杂度为O(n^2)
      * 因此冒泡排序的时间复杂度为O(n^2)
+     *
+     * 鸡尾酒排序 Cocktail Sort 比较和交换的双向的，是冒泡排序的优化版
+     *      基本思想：奇数轮从左至右进行比较和交换，偶数轮从右至左进行比较和交换
+     *      适用于大部分元素已经有序的情况下
+     * 时间复杂度与冒泡排序一样
      *
      *
      *

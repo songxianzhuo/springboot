@@ -16,7 +16,16 @@ public class TestList extends JavaDemoApplicationTests {
 
     @Test
     public void arrayList(){
-        List<String> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        System.out.println(list.size());
+        list.add(list.size(),5);
+        for (Integer integer : list) {
+            System.out.println(integer);
+        }
 
     }
 
@@ -35,8 +44,9 @@ public class TestList extends JavaDemoApplicationTests {
         list.add(2,"xian");
         list.add("xian");
         list.add(null);
-        list.stream().forEach(System.out::println);
-
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
     }
 
 
