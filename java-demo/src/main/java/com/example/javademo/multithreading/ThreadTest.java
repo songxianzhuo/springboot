@@ -28,5 +28,6 @@ public class ThreadTest {
             thread2.setPriority(10);
             thread2.start();
         }
+        double d = 10.0;
     }
 }

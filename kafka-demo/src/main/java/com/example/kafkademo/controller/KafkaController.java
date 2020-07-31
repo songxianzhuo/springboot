@@ -24,6 +24,7 @@ public class KafkaController {
 
     @PostMapping("/send")
     public void sendMsg(@RequestParam String msg){
-        kafkaProducer.send(msg);
+//        kafkaProducer.send(msg);
+        kafkaProducer.sendTransaction(msg);
     }
 }
